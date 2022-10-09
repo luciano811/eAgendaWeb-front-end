@@ -1,21 +1,32 @@
-import { Injectable } from "@angular/core";
-import { TokenViewModel, UsuarioTokenViewModel } from "../view-models/token.view-model";
+import { Injectable } from '@angular/core';
+import {
+  TokenViewModel,
+  UsuarioTokenViewModel,
+} from '../view-models/token.view-model';
 
 @Injectable()
 export class LocalStorageService {
-public salvarDadosLocaisUsuario(resposta: TokenViewModel): void {
-  this.salvarTokenUsuario(resposta.chave);
-  this.salvarUsuario(resposta.usuarioToken);
-}
+  public salvarDadosLocaisUsuario(resposta: TokenViewModel): void {
+    this.salvarTokenUsuario(resposta.chave);
+    this.salvarUsuario(resposta.usuarioToken);
+  }
 
-public salvarTokenUsuario(token: string) {
-  localStorage.setItem('eAgenda.token' , token);
-}
+  public salvarTokenUsuario(token: string) {
+    localStorage.setItem('eAgenda.token', token);
+  }
 
-public salvarUsuario(usuario: UsuarioTokenViewModel) {
+  public salvarUsuario(usuario: UsuarioTokenViewModel) {
+    const jsonString = JSON.stringify(usuario);
 
-  const jsonString = JSON.stringify(usuario);
+    localStorage.setItem('eAgenda.usuario', jsonString);
+  }
 
-  localStorage.setItem('eAgenda.usuario', jsonString);
-}
+  public obterUsuarioLogado() {
+    const usuarioJson = localStorage.getItem('eAgenda.usuario');
+
+    if (usuarioJson)
+      return JSON.parse(usuarioJson) as UsuarioTokenViewModel;
+
+      return null
+  }
 }
