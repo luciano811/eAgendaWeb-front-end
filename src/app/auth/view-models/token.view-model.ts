@@ -4,7 +4,7 @@ export class TokenViewModel{
   chave:string;
   dataExpiracao:Date;
 
-  usuarioToken: RegistrarUsuarioViewModel;
+  usuarioToken: UsuarioTokenViewModel;
 }
 
 export class UsuarioTokenViewModel{
