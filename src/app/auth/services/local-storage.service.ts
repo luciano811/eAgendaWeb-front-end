@@ -1,11 +1,9 @@
-import { Injectable } from '@angular/core';
-import {
-  TokenViewModel,
-  UsuarioTokenViewModel,
-} from '../view-models/token.view-model';
+import { Injectable } from "@angular/core";
+import { TokenViewModel, UsuarioTokenViewModel } from "../view-models/token.view-model";
 
 @Injectable()
 export class LocalStorageService {
+
   public salvarDadosLocaisUsuario(resposta: TokenViewModel): void {
     this.salvarTokenUsuario(resposta.chave);
     this.salvarUsuario(resposta.usuarioToken);
@@ -27,6 +25,15 @@ export class LocalStorageService {
     if (usuarioJson)
       return JSON.parse(usuarioJson) as UsuarioTokenViewModel;
 
-      return null
+    return null;
+  }
+
+  public obterTokenUsuario(): string {
+    return localStorage.getItem('eAgenda.token') ?? '';
+  }
+
+  public limparDadosLocais() {
+    localStorage.removeItem('eAgenda.token');
+    localStorage.removeItem('eAgenda.usuario');
   }
 }
