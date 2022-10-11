@@ -32,6 +32,7 @@ export class LocalStorageService {
     return localStorage.getItem('eAgenda.token') ?? '';
   }
 
+  //aqui Logout
   public limparDadosLocais() {
     localStorage.removeItem('eAgenda.token');
     localStorage.removeItem('eAgenda.usuario');
