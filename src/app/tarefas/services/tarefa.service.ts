@@ -5,7 +5,6 @@ import { LocalStorageService } from "app/auth/services/local-storage.service";
 import { environment } from "environments/environment";
 import { FormsTarefaViewModel } from "../view-models/forms-tarefa.view-model";
 import { ListarTarefaViewModel } from "../view-models/listar-tarefa.view-model";
-
 @Injectable()
 export class TarefaService {
   private apiUrl: string = environment.apiUrl;
@@ -13,10 +12,16 @@ export class TarefaService {
     private http: HttpClient,
     private localStorageService: LocalStorageService
   ) { }
-
   public inserir(tarefa: FormsTarefaViewModel): Observable<FormsTarefaViewModel> {
     const resposta = this.http
       .post<FormsTarefaViewModel>(this.apiUrl + 'tarefas', tarefa, this.obterHeadersAutorizacao())
+      .pipe(map(this.processarDados), catchError(this.processarFalha));
+    return resposta;
+  }
+
+  public editar(tarefa: FormsTarefaViewModel): Observable<FormsTarefaViewModel> {
+    const resposta = this.http
+      .put<FormsTarefaViewModel>(this.apiUrl + 'tarefas/' + tarefa.id, tarefa, this.obterHeadersAutorizacao())
       .pipe(map(this.processarDados), catchError(this.processarFalha));
 
     return resposta;
@@ -28,8 +33,18 @@ export class TarefaService {
       .pipe(map(this.processarDados), catchError(this.processarFalha));
     return resposta;
   }
+
+  public selecionarPorId(id: string): Observable<FormsTarefaViewModel> {
+    const resposta = this.http
+      .get<FormsTarefaViewModel>(this.apiUrl + 'tarefas/' + id, this.obterHeadersAutorizacao())
+      .pipe(map(this.processarDados), catchError(this.processarFalha));
+
+    return resposta;
+  }
+
   private obterHeadersAutorizacao() {
     const token = this.localStorageService.obterTokenUsuario();
+
     return {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
