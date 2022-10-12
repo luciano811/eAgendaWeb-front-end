@@ -50,7 +50,7 @@ export class TarefaService {
 
   public selecionarTarefaCompletaPorId(id: string): Observable<VisualizarTarefaViewModel> {
     const resposta = this.http
-      .get<VisualizarTarefaViewModel>(this.apiUrl + 'tarefas/visualizacao-completa/' + id, this.obterHeadersAutorizacao())
+      .get<VisualizarTarefaViewModel>(this.apiUrl + 'tarefas/visualizar-completa/' + id, this.obterHeadersAutorizacao())
       .pipe(map(this.processarDados), catchError(this.processarFalha));
 
     return resposta;
@@ -69,7 +69,6 @@ export class TarefaService {
 
 
   private processarDados(resposta: any) {
-    if (resposta.sucesso)
     if (resposta?.sucesso)
       return resposta.dados;
     else

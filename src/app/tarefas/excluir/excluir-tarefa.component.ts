@@ -28,15 +28,15 @@ export class ExcluirTarefaComponent implements OnInit {
   }
 
   public gravar() {
-
+console.log(this.tarefaFormVM.id)
     this.tarefaService.excluir(this.tarefaFormVM.id)
       .subscribe({
-        next: (tarefaId) => this.processarSucesso(tarefaId),
+        next: () => this.processarSucesso(),
         error: (erro) => this.processarFalha(erro)
       })
   }
 
-  private processarSucesso(tarefaId: string): void {
+  private processarSucesso(): void {
     this.router.navigate(['/tarefas/listar']);
   }
 
